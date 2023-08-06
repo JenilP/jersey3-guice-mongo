@@ -1,0 +1,33 @@
+<configuration scan="true">
+
+  <property name="HOME_LOG" value="logs/app.log"/>
+
+  <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${HOME_LOG}</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <maxFileSize>10MB</maxFileSize>
+      <totalSizeCap>20GB</totalSizeCap>
+      <maxHistory>21</maxHistory>
+    </rollingPolicy>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>%-7([%level]) %d{HH:mm:ss.SSS} [%t] %logger{50} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>%highlight(%-7([%level])) %boldYellow(%d{HH:mm:ss.SSS}) %green([%t]) %logger{50} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="com.monke" level="INFO" additivity="false">
+    <appender-ref ref="FILE-ROLLING"/>
+    <appender-ref ref="STDOUT"/>
+  </logger>
+
+  <root level="ERROR">
+    <appender-ref ref="FILE-ROLLING"/>
+  </root>
+
+</configuration>
